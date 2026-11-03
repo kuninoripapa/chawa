@@ -23,10 +23,10 @@
   };
 
   var COURSES = [
-    { id: 'A', name: 'Aコース　洋食肉バル＆スイーツ', price: 6000 },
-    { id: 'B', name: 'Bコース　本格中華＆握り寿司＋甘味', price: 6000 },
-    { id: 'C', name: 'Cコース　特選寿司＆ローストビーフ＆果実', price: 7000 },
-    { id: 'S', name: '別プラン　スタッフ付きケータリング', price: 11000, from: true }
+    { id: 'A', name: 'Aコース　オードブルスタイル（12品）', price: 6000, min: 10 },
+    { id: 'B', name: 'Bコース　オードブルスタイル（10品）', price: 6000, min: 10 },
+    { id: 'C', name: 'Cコース　ケータリングスタイル（11品）', price: 7000, min: 15 },
+    { id: 'S', name: '別プラン　スタッフ付きケータリング', price: 11000, from: true, min: 10 }
   ];
 
   var KINDS = ['忘年会', '新年会', '歓送迎会', '誕生日・お祝い', '女子会', '同窓会・OB会', '社内の集まり', 'その他'];
@@ -62,6 +62,11 @@
   }
   // 最低保証人数：土曜・祝前日・12月は12名、ほかは10名
   function minGuests(k) {
+    var c = course();
+    var cm = c && c.min ? c.min : 10;
+    return Math.max(cm, dayMin(k));
+  }
+  function dayMin(k) {
     var d = parse(k);
     if (d.getMonth() === 11 || d.getDay() === 6 || isHoliday(addDays(d, 1))) return 12;
     return 10;
@@ -160,7 +165,7 @@
       lines.push('会費の目安：' + yen(c.price) + (c.from ? '〜' : '') + ' × ' + billable + '名 ＝ ' + yen(c.price * billable) + (c.from ? '〜' : '') + '（税込）');
     }
     out.innerHTML = lines.map(function (l) { return '<span>' + l + '</span>'; }).join('');
-    $('bk-minnote').textContent = 'この日の最低保証人数は' + min + '名です。下回る場合も' + min + '名分の会費となります。';
+    $('bk-minnote').textContent = 'この日程・コースの最低人数は' + min + '名です（A・B 10名、C 15名。土曜・祝前日・12月は12名以上）。下回る場合も' + min + '名分の会費となります。';
   }
 
   function buildText() {
