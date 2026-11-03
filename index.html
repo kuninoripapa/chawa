@@ -60,11 +60,27 @@ h1 small { display: block; font-family: var(--body); font-size: 13px; font-weigh
 .actions { display: flex; flex-wrap: wrap; gap: 10px; }
 footer { color: var(--muted); font-size: 12px; text-align: center; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+
+.closed { min-height: 70vh; display: grid; place-content: center; text-align: center; gap: 14px; padding-block: 40px; }
+.closed .moon { width: 56px; height: 56px; margin: 0 auto; }
+.closed h1 { font-size: clamp(24px, 7vw, 30px); }
+.closed p { color: var(--muted); }
+.closed .tel strong { font-size: 22px; }
+.closed .tel { justify-content: center; }
+body.is-loading main { visibility: hidden; }
 </style>
 
 </head>
-<body>
-<main class="wrap">
+<body class="is-loading">
+<main class="wrap closed" id="closed" hidden>
+  <div class="brand" style="justify-content:center"><b>茶和</b>Cha-wa ／ 恵比寿</div>
+  <svg class="moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 2a8 8 0 1 0 5 13A7 7 0 0 1 13 2z" fill="#E2BE63"/></svg>
+  <h1>ただいま準備中です</h1>
+  <p>夜の貸切パーティーのご案内ページは、<br>まもなく公開します。</p>
+  <p>ご予約・お問い合わせは、ショートメールで<br>「貸切」とお送りください。</p>
+  <div class="tel"><strong>090-2469-6706</strong></div>
+</main>
+<main class="wrap" id="open">
   <div class="brand"><b>茶和</b>Cha-wa ／ 恵比寿</div>
 
   <section class="stage" aria-label="紹介動画">
@@ -124,6 +140,23 @@ footer { color: var(--muted); font-size: 12px; text-align: center; }
     return fetch(path, { method: 'HEAD', cache: 'no-store' }).then(function (r) { return r.ok; }).catch(function () { return false; });
   }
 
+  var closedEl = document.getElementById('closed');
+  var openEl = document.getElementById('open');
+  var decided = false;
+  function show(isClosed) {
+    if (decided) return; decided = true;
+    closedEl.hidden = !isClosed; openEl.hidden = isClosed;
+    document.body.classList.remove('is-loading');
+    if (!isClosed) start();
+  }
+  // status.txt の1行目が「準備中」なら準備中の画面を出す。「公開」なら通常のページ。
+  fetch('status.txt', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.text() : '公開'; })
+    .then(function (t) { show(t.trim().indexOf('準備中') === 0); })
+    .catch(function () { show(false); });
+  setTimeout(function () { show(false); }, 4000);
+
+  function start() {
   exists('video.mp4').then(function (ok) {
     if (!ok) return;
     vid.src = 'video.mp4' + ver;
@@ -135,6 +168,7 @@ footer { color: var(--muted); font-size: 12px; text-align: center; }
     if (!ok) return;
     bgm = new Audio('bgm.mp3' + ver); bgm.loop = true; bgm.preload = 'auto';
   });
+  }
 
   var ON = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>';
   var OFF = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/>';
