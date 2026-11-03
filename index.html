@@ -35,7 +35,7 @@ body { background: var(--night); color: var(--text); font-family: var(--body); f
 .placeholder .moon { width: 64px; height: 64px; margin: 0 auto; }
 .placeholder p { color: var(--muted); font-size: 13px; }
 .placeholder h2 { font-family: var(--display); font-size: 26px; line-height: 1.35; text-wrap: balance; }
-.sound { position: absolute; right: calc(12px + env(safe-area-inset-right, 0px)); bottom: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--gold-soft); background: rgba(20,26,51,.78); color: var(--text); font: 700 14px var(--body); cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.sound { position: absolute; right: calc(12px + env(safe-area-inset-right, 0px)); top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--gold-soft); background: rgba(20,26,51,.78); color: var(--text); font: 700 14px var(--body); cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .sound svg { width: 20px; height: 20px; }
 .sound[aria-pressed="true"] { background: var(--gold); color: var(--night); border-color: var(--gold); }
 .sound:focus-visible, .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
@@ -68,6 +68,61 @@ footer { color: var(--muted); font-size: 12px; text-align: center; }
 .closed .tel strong { font-size: 22px; }
 .closed .tel { justify-content: center; }
 body.is-loading main { visibility: hidden; }
+/* ---- 予約画面 ---- */
+.tapbook { position: absolute; left: 50%; transform: translateX(-50%); bottom: 14px; white-space: nowrap; padding: 12px 20px; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; border: 0; background: var(--gold); color: var(--night); font: 900 15px var(--body); cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.tapbook:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+dialog.bk { width: 100%; max-width: 560px; max-height: 100%; height: 100%; margin: 0 auto; padding: 0; border: 0; background: var(--night); color: var(--text); }
+dialog.bk::backdrop { background: rgba(8,10,22,.7); }
+@media (min-width: 600px) { dialog.bk { height: auto; max-height: 92vh; margin-top: 4vh; border-radius: 16px; border: 1px solid var(--line); } }
+.bk-head { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--night-2); border-bottom: 1px solid var(--line); padding-block: calc(10px + env(safe-area-inset-top, 0px)) 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bk-head h2 { font-family: var(--display); font-size: 19px; }
+.bk-x { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--text); font-size: 22px; cursor: pointer; }
+.bk-body { display: grid; gap: 18px; padding-block: 16px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bk-step { font-weight: 900; color: var(--gold); font-size: 14px; }
+.bk-cal { background: var(--night-2); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+.bk-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.bk-nav b { font-size: 16px; font-variant-numeric: tabular-nums; }
+.bk-nav button { width: 40px; height: 36px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--text); font-size: 16px; cursor: pointer; }
+.bk-nav button:disabled { opacity: .3; cursor: default; }
+.bk-wd, .bk-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.bk-wd span { font-size: 11px; color: var(--muted); padding-bottom: 2px; }
+.bk-wd span:first-child { color: #E88A8A; } .bk-wd span:last-child { color: #8AB4E8; }
+.bk-day { position: relative; aspect-ratio: 1 / 1.05; min-width: 0; border-radius: 8px; border: 1px solid var(--line); background: #222B4D; color: var(--text); font: 700 15px var(--body); font-variant-numeric: tabular-nums; cursor: pointer; padding: 0; }
+.bk-day.sun { color: #F0A0A0; } .bk-day.sat { color: #A6C6F0; }
+.bk-day:disabled { background: transparent; border-color: transparent; color: #4D557A; cursor: default; }
+.bk-day.out { visibility: hidden; }
+.bk-day.sel { background: var(--gold); color: var(--night); border-color: var(--gold); }
+.bk-dots { position: absolute; left: 0; right: 0; bottom: 4px; display: flex; justify-content: center; gap: 3px; }
+.bk-dots i { width: 6px; height: 6px; border-radius: 50%; }
+.bk-dots i.night { background: var(--gold); } .bk-dots i.day { background: #F3F1EA; }
+.bk-day.sel .bk-dots i { background: var(--night); }
+.bk-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; font-size: 12px; color: var(--muted); }
+.bk-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+.bk-slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.bk-slot { display: grid; gap: 2px; padding: 12px; border-radius: 12px; border: 1px solid var(--gold-soft); background: transparent; color: var(--text); font: 700 15px var(--body); cursor: pointer; font-variant-numeric: tabular-nums; }
+.bk-slot b { font-family: var(--display); font-size: 20px; color: var(--gold); }
+.bk-slot.sel { background: var(--gold); color: var(--night); } .bk-slot.sel b { color: var(--night); }
+.bk-form { display: grid; gap: 16px; }
+.bk-f { display: grid; gap: 6px; }
+.bk-f > label, .bk-f > span { font-size: 13px; font-weight: 700; color: var(--gold); }
+.bk-f small { color: var(--muted); font-size: 12px; }
+.bk input[type=text], .bk input[type=tel], .bk input[type=email], .bk input[type=number], .bk select, .bk textarea { width: 100%; min-width: 0; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: #222B4D; color: var(--text); font: 400 16px var(--body); }
+.bk textarea { min-height: 84px; resize: vertical; }
+.bk input:focus-visible, .bk select:focus-visible, .bk textarea:focus-visible, .bk-day:focus-visible, .bk-slot:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.bk-courses { display: grid; gap: 8px; }
+.bk-course { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 10px; padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: #222B4D; cursor: pointer; }
+.bk-course input { width: 20px; height: 20px; accent-color: #E2BE63; grid-row: span 2; }
+.bk-course span { font-weight: 700; min-width: 0; }
+.bk-course em { font-style: normal; color: var(--gold); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bk-course:has(input:checked) { border-color: var(--gold); }
+.bk-agree { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-size: 13px; line-height: 1.6; }
+.bk-agree input { width: 20px; height: 20px; margin-top: 2px; accent-color: #E2BE63; }
+.bk-sum { display: grid; gap: 2px; padding: 12px; border-radius: 10px; background: #0F1430; border: 1px dashed var(--gold-soft); font-size: 14px; font-variant-numeric: tabular-nums; }
+.bk-sum:empty { display: none; }
+.bk-err { color: #FFB4A8; font-size: 13px; font-weight: 700; }
+.bk-send { display: grid; gap: 12px; background: var(--night-2); border: 1px solid var(--gold-soft); border-radius: 14px; padding: 16px; }
+.bk-send pre { white-space: pre-wrap; word-break: break-word; font: 400 13px/1.6 var(--body); background: #0F1430; padding: 12px; border-radius: 10px; max-height: 260px; overflow: auto; }
+.bk-send .actions .btn { flex: 1 1 200px; }
 </style>
 
 </head>
@@ -91,6 +146,7 @@ body.is-loading main { visibility: hidden; }
     </div>
     <video id="vid" muted playsinline loop autoplay preload="auto" hidden></video>
     <span class="hint" id="hint" hidden>音はオフになっています</span>
+    <button class="tapbook" type="button" data-open-booking>空き日程を見て予約する</button>
     <button class="sound" id="sound" type="button" aria-pressed="false" hidden>
       <svg id="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
       <span id="slabel">音をオンにする</span>
@@ -110,12 +166,16 @@ body.is-loading main { visibility: hidden; }
   <section class="book" aria-labelledby="bk">
     <h2 id="bk">ご予約・お問い合わせ</h2>
     <ol>
-      <li>下の番号へ、ショートメールで「貸切」と送ってください。</li>
-      <li>担当の馬塲から、空き日程とご案内をお返事します。</li>
+      <li>「空き日程を見て予約する」から、日付・時間帯・人数・コースを選んでお申し込みください。</li>
+      <li>担当の馬塲から、ご予約内容の確認とお支払いのご案内をお送りします。</li>
     </ol>
+    <div class="actions">
+      <button class="btn primary" type="button" data-open-booking>空き日程を見て予約する</button>
+    </div>
+    <p class="note">お電話・ショートメールでのお問い合わせ</p>
     <div class="tel"><strong id="num">090-2469-6706</strong></div>
     <div class="actions">
-      <a class="btn primary" href="sms:09024696706?&amp;body=%E8%B2%B8%E5%88%87">ショートメールを開く</a>
+      <a class="btn" href="sms:09024696706?&amp;body=%E8%B2%B8%E5%88%87">ショートメールを開く</a>
       <button class="btn" id="copy" type="button">番号をコピー</button>
     </div>
     <p class="note" id="copied" role="status"></p>
@@ -203,6 +263,51 @@ body.is-loading main { visibility: hidden; }
   });
 })();
 </script>
+
+<dialog class="bk" id="bkdlg" aria-labelledby="bk-h">
+  <div class="bk-head"><h2 id="bk-h">貸切パーティーのお申込み</h2><button class="bk-x" id="bk-close" type="button" aria-label="閉じる">×</button></div>
+  <div class="bk-body">
+    <p class="bk-step">1. 日付を選んでください</p>
+    <div class="bk-cal">
+      <div class="bk-nav"><button type="button" id="bk-prev" aria-label="前の月">‹</button><b id="bk-title"></b><button type="button" id="bk-next" aria-label="次の月">›</button></div>
+      <div class="bk-wd" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+      <div class="bk-grid" id="bk-grid"></div>
+      <div class="bk-legend"><span><i style="background:#F3F1EA"></i>昼 11:00〜14:00 空き</span><span><i style="background:#E2BE63"></i>夜 18:30〜21:30 空き</span></div>
+      <p class="note" style="margin-top:6px">ご予約は利用日の5日前までです。</p>
+    </div>
+    <div id="bk-slotbox" hidden></div>
+    <form class="bk-form" id="bk-form" hidden novalidate>
+      <p class="bk-step">2. ご希望を入力してください</p>
+      <div class="bk-f"><label for="bk-guests">人数</label><input type="number" id="bk-guests" inputmode="numeric" min="1" max="20" placeholder="例：15"><small id="bk-minnote"></small><small>最大20名さま（着席）です。</small></div>
+      <div class="bk-f"><span>コース（税込・エビス樽生 飲み放題込み）</span><div class="bk-courses" id="bk-courses"></div></div>
+      <div class="bk-f"><label for="bk-kind">パーティの種類</label><select id="bk-kind"><option value="">選んでください</option></select></div>
+      <div class="bk-f"><label for="bk-name">ご予約代表者のお名前</label><input type="text" id="bk-name" autocomplete="name" placeholder="例：恵比寿 太郎"></div>
+      <div class="bk-f"><label for="bk-tel">電話番号（ショートメールが届く番号）</label><input type="tel" id="bk-tel" autocomplete="tel" inputmode="tel" placeholder="例：090-1234-5678"></div>
+      <div class="bk-f"><label for="bk-mail">メールアドレス（任意）</label><input type="email" id="bk-mail" autocomplete="email" placeholder="例：taro@example.com"></div>
+      <div class="bk-f"><label for="bk-note">ご要望（任意）</label><textarea id="bk-note" placeholder="アレルギー、お祝いのプレート、開始時間のご相談など"></textarea></div>
+      <div class="bk-f">
+        <span>ご確認ください</span>
+        <label class="bk-agree"><input type="checkbox" id="bk-agree1"><span>各コースは茶和が調理するものではなく、ご希望に合わせて茶和がケータリング・デリバリーを手配（コーディネート）してご用意するサービスです。会費には手配料（コーディネート料）と貸切空間の提供を含みます。</span></label>
+        <label class="bk-agree"><input type="checkbox" id="bk-agree2"><span>破損・汚損・ゴミの未分別があった場合、後日追加でご請求することに同意します。</span></label>
+      </div>
+      <div class="bk-sum" id="bk-sum" aria-live="polite"></div>
+      <p class="bk-err" id="bk-err" role="alert" hidden></p>
+      <button class="btn primary" type="submit">申込内容を確認する</button>
+    </form>
+    <section class="bk-send" id="bk-send" hidden aria-labelledby="bk-sh">
+      <p class="bk-step" id="bk-sh">3. 申込内容を送信してください</p>
+      <pre id="bk-preview"></pre>
+      <div class="actions">
+        <a class="btn primary" id="bk-mailto" href="#">メールで送信する</a>
+        <a class="btn" id="bk-smsto" href="#">ショートメールで送信する</a>
+      </div>
+      <button class="btn" type="button" id="bk-copy">申込内容をコピー</button>
+      <p class="note" id="bk-copied" role="status"></p>
+      <p class="note">ボタンを押すとメールまたはメッセージのアプリが開きます。そのまま送信してください。アプリが開かない場合は、内容をコピーして domanagement.net@gmail.com へメールでお送りください。<br>送信後、茶和からの確認のご連絡をもってご予約確定となります。</p>
+    </section>
+  </div>
+</dialog>
+<script src="booking.js" defer></script>
 
 </body>
 </html>
