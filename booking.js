@@ -195,7 +195,7 @@
     var bad = [];
     if (!state.date || !state.slot) bad.push('日付と時間帯');
     var n = parseInt($('bk-guests').value, 10);
-    if (!n || n < 1 || n > 20) bad.push('人数（1〜20名）');
+    if (!n || n < 1 || n > 35) bad.push('人数（1〜35名）');
     if (!course()) bad.push('コース');
     if (!$('bk-kind').value) bad.push('パーティの種類');
     if (!$('bk-name').value.trim()) bad.push('お名前');
