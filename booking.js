@@ -45,7 +45,7 @@
   function isBooked(k, slot) {
     return cfg.booked.some(function (b) { return b.date === k && (b.slot === slot || b.slot === 'all'); });
   }
-  // 仮押さえ中（申込受付〜決済待ち）の枠。availability.json の booked で "status":"hold" のもの
+  // 仮予約（申込受付〜決済待ち）の枠。availability.json の booked で "status":"hold" のもの
   function heldSlots(d) {
     var k = key(d);
     return cfg.booked.filter(function (b) { return b.date === k && b.status === 'hold'; }).map(function (b) { return b.slot; });
@@ -110,7 +110,7 @@
       } else if (d >= addDays(today(), LEAD_DAYS) && d <= parse(cfg.until) && heldSlots(d).length) {
         b.classList.add('hold');
         var hm = document.createElement('span'); hm.className = 'bk-hold'; hm.textContent = '仮'; b.appendChild(hm);
-        b.setAttribute('aria-label', jp(k) + ' 仮押さえ中');
+        b.setAttribute('aria-label', jp(k) + ' 仮予約あり');
       } else {
         b.setAttribute('aria-label', jp(k) + ' 受付なし');
       }
@@ -152,7 +152,7 @@
       if (!SLOTS[x]) return;
       var hb = document.createElement('button');
       hb.type = 'button'; hb.className = 'bk-slot held'; hb.disabled = true;
-      hb.innerHTML = '<b>' + SLOTS[x].label + '</b>仮押さえ中';
+      hb.innerHTML = '<b>' + SLOTS[x].label + '</b>仮予約あり';
       row.appendChild(hb);
     });
     slotBox.appendChild(row);
@@ -203,7 +203,7 @@
       '規約第1条（コースは茶和の手配・コーディネートで、会費にコーディネート料を含む）：承諾',
       '破損・汚損・未分別時の追加請求：承諾',
       '',
-      '※この申込みはまだ確定ではありません。送信後、この日程は仮押さえとなります。茶和から可否をご連絡し、お受けできる場合は決済リンクをお送りします。ご案内から3時間以内のお支払いでご予約確定、期限を過ぎると仮押さえは解除されます。'
+      '※送信後、この日程は仮予約となります。お料理の手配が確定しだい、茶和からご予約確定のご連絡と事前決済リンクをお送りします（提携先の受付は11:00〜20:00のため、20時以降のお申込みは翌日11時以降のご連絡）。ご連絡から6時間以内に事前決済がない場合、仮予約は解除されます。'
     ].join('\n');
   }
 
