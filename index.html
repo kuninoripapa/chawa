@@ -91,6 +91,9 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
 .bk-day.sun { color: #F0A0A0; } .bk-day.sat { color: #A6C6F0; }
 .bk-day:disabled { background: transparent; border-color: transparent; color: #4D557A; cursor: default; }
 .bk-day.out { visibility: hidden; }
+.bk-day.hold { color: #8A90B0; }
+.bk-hold { position: absolute; left: 50%; bottom: 3px; transform: translateX(-50%); font-size: 10px; line-height: 1; color: #E2BE63; font-weight: 700; }
+.bk-slot.held { opacity: .55; cursor: default; }
 .bk-day.sel { background: var(--gold); color: var(--night); border-color: var(--gold); }
 .bk-dots { position: absolute; left: 0; right: 0; bottom: 4px; display: flex; justify-content: center; gap: 3px; }
 .bk-dots i { width: 6px; height: 6px; border-radius: 50%; }
@@ -167,7 +170,9 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
     <h2 id="bk">ご予約・お問い合わせ</h2>
     <ol>
       <li>「空き日程を見て予約する」から、日付・時間帯・人数・コースを選んでお申し込みください。</li>
-      <li>担当の馬塲から、ご予約内容の確認とお支払いのご案内をお送りします。</li>
+      <li>お申込みの日程は、すぐに仮押さえとなります（ほかの方はお申込みできません）。</li>
+      <li>提携先の手配を確認し、担当の馬塲からできるだけ早く可否をご連絡します。お受けできる場合は、Airペイの決済リンクをお送りします。</li>
+      <li>ご案内から<strong>3時間以内</strong>のお支払いでご予約確定です。期限を過ぎると仮押さえは解除され、白紙となります。</li>
     </ol>
     <div class="actions">
       <button class="btn primary" type="button" data-open-booking>空き日程を見て予約する</button>
@@ -303,7 +308,7 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
       </div>
       <button class="btn" type="button" id="bk-copy">申込内容をコピー</button>
       <p class="note" id="bk-copied" role="status"></p>
-      <p class="note">ボタンを押すとメールまたはメッセージのアプリが開きます。そのまま送信してください。アプリが開かない場合は、内容をコピーして domanagement.net@gmail.com へメールでお送りください。<br>送信後、茶和からの確認のご連絡をもってご予約確定となります。</p>
+      <p class="note">ボタンを押すとメールまたはメッセージのアプリが開きます。そのまま送信してください。アプリが開かない場合は、内容をコピーして domanagement.net@gmail.com へメールでお送りください。<br>送信後、この日程は仮押さえとなります。茶和から可否をご連絡し、お受けできる場合は決済リンクをお送りします。ご案内から3時間以内のお支払いでご予約確定、期限を過ぎると仮押さえは解除されます。</p>
     </section>
   </div>
 </dialog>

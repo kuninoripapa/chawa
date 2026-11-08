@@ -45,6 +45,11 @@
   function isBooked(k, slot) {
     return cfg.booked.some(function (b) { return b.date === k && (b.slot === slot || b.slot === 'all'); });
   }
+  // 仮押さえ中（申込受付〜決済待ち）の枠。availability.json の booked で "status":"hold" のもの
+  function heldSlots(d) {
+    var k = key(d);
+    return cfg.booked.filter(function (b) { return b.date === k && b.status === 'hold'; }).map(function (b) { return b.slot; });
+  }
   function slotsFor(d) {
     var k = key(d), w = d.getDay(), hol = isHoliday(d), out = [];
     if (cfg.closed.indexOf(k) >= 0) return out;
@@ -102,6 +107,10 @@
         s.forEach(function (x) { var i2 = document.createElement('i'); i2.className = x; dots.appendChild(i2); });
         b.appendChild(dots);
         b.setAttribute('aria-label', jp(k) + ' 空きあり（' + s.map(function (x) { return SLOTS[x].label; }).join('・') + '）');
+      } else if (d >= addDays(today(), LEAD_DAYS) && d <= parse(cfg.until) && heldSlots(d).length) {
+        b.classList.add('hold');
+        var hm = document.createElement('span'); hm.className = 'bk-hold'; hm.textContent = '仮'; b.appendChild(hm);
+        b.setAttribute('aria-label', jp(k) + ' 仮押さえ中');
       } else {
         b.setAttribute('aria-label', jp(k) + ' 受付なし');
       }
@@ -138,6 +147,13 @@
       });
       row.appendChild(b);
       if (s.length === 1) setTimeout(function () { b.click(); }, 0);
+    });
+    heldSlots(parse(k)).forEach(function (x) {
+      if (!SLOTS[x]) return;
+      var hb = document.createElement('button');
+      hb.type = 'button'; hb.className = 'bk-slot held'; hb.disabled = true;
+      hb.innerHTML = '<b>' + SLOTS[x].label + '</b>仮押さえ中';
+      row.appendChild(hb);
     });
     slotBox.appendChild(row);
     slotBox.hidden = false;
@@ -187,7 +203,7 @@
       '規約第1条（コースは茶和の手配・コーディネートで、会費にコーディネート料を含む）：承諾',
       '破損・汚損・未分別時の追加請求：承諾',
       '',
-      '※この申込みはまだ確定ではありません。茶和からの確認のご連絡をもってご予約確定となります。'
+      '※この申込みはまだ確定ではありません。送信後、この日程は仮押さえとなります。茶和から可否をご連絡し、お受けできる場合は決済リンクをお送りします。ご案内から3時間以内のお支払いでご予約確定、期限を過ぎると仮押さえは解除されます。'
     ].join('\n');
   }
 
