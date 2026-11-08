@@ -135,7 +135,7 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
   <svg class="moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M13 2a8 8 0 1 0 5 13A7 7 0 0 1 13 2z" fill="#E2BE63"/></svg>
   <h1>ただいま準備中です</h1>
   <p>貸切パーティーのご案内ページは、<br>まもなく公開します。</p>
-  <p>ご予約・お問い合わせは、ショートメールで<br>「貸切」とお送りください。</p>
+  <p>お問い合わせは、お電話でお願いします。</p>
   <div class="tel"><strong>090-2469-6706</strong></div>
 </main>
 <main class="wrap" id="open">
@@ -172,19 +172,19 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
       <li>「空き日程を見て予約する」から、日付・時間帯・人数・コースを選んでお申し込みください。</li>
       <li>お申込みの日程は、すぐに<strong>仮予約</strong>となります（ほかの方はお申込みできません）。</li>
       <li>提携先へのお料理の手配（受付 11:00〜20:00）が確定しだい、担当の馬塲からご予約確定のご連絡と、Airペイの事前決済リンクをお送りします。20時以降のお申込みは、翌日11時以降のご連絡となります。</li>
-      <li>ご連絡から<strong>6時間以内</strong>に事前決済をお願いします。期限を過ぎると仮予約は解除され、白紙となります。</li>
+      <li>ご連絡から<strong>6時間以内</strong>（期限が22時〜翌9時にかかる場合は翌朝10時まで）に事前決済をお願いします。期限を過ぎると仮予約は解除され、白紙となります。</li>
     </ol>
     <div class="actions">
       <button class="btn primary" type="button" data-open-booking>空き日程を見て予約する</button>
     </div>
-    <p class="note">お電話・ショートメールでのお問い合わせ</p>
+    <p class="note">ご予約は「空き日程を見て予約する」からのメールでのお申込みのみ承ります。<br>お問い合わせはお電話で</p>
     <div class="tel"><strong id="num">090-2469-6706</strong></div>
     <div class="actions">
-      <a class="btn" href="sms:09024696706?&amp;body=%E8%B2%B8%E5%88%87">ショートメールを開く</a>
+      <a class="btn" href="tel:09024696706">電話をかける</a>
       <button class="btn" id="copy" type="button">番号をコピー</button>
     </div>
     <p class="note" id="copied" role="status"></p>
-    <p class="note">ボタンで開かない場合は、番号をメッセージアプリに入力してください。ご予約は利用日の5日前までにお願いします。</p>
+    <p class="note">ご予約は利用日の5日前までにお願いします。</p>
   </section>
 
   <footer>有限会社デューマネジメント ／ 茶和（Cha-wa）</footer>
@@ -287,8 +287,8 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
       <div class="bk-f"><span>コース（税込・エビス樽生 飲み放題込み）</span><div class="bk-courses" id="bk-courses"></div><small>食材事情によりお料理内容が変わる場合があります。</small></div>
       <div class="bk-f"><label for="bk-kind">パーティの種類</label><select id="bk-kind"><option value="">選んでください</option></select></div>
       <div class="bk-f"><label for="bk-name">ご予約代表者のお名前</label><input type="text" id="bk-name" autocomplete="name" placeholder="例：恵比寿 太郎"></div>
-      <div class="bk-f"><label for="bk-tel">電話番号（ショートメールが届く番号）</label><input type="tel" id="bk-tel" autocomplete="tel" inputmode="tel" placeholder="例：090-1234-5678"></div>
-      <div class="bk-f"><label for="bk-mail">メールアドレス（任意）</label><input type="email" id="bk-mail" autocomplete="email" placeholder="例：taro@example.com"></div>
+      <div class="bk-f"><label for="bk-tel">電話番号（当日つながる番号）</label><input type="tel" id="bk-tel" autocomplete="tel" inputmode="tel" placeholder="例：090-1234-5678"></div>
+      <div class="bk-f"><label for="bk-mail">メールアドレス（ご予約確定・決済のご連絡先）</label><input type="email" id="bk-mail" autocomplete="email" placeholder="例：taro@example.com"></div>
       <div class="bk-f"><label for="bk-note">ご要望（任意）</label><textarea id="bk-note" placeholder="アレルギー、お祝いのプレート、開始時間のご相談など"></textarea></div>
       <div class="bk-f">
         <span>ご確認ください</span>
@@ -304,11 +304,10 @@ dialog.bk::backdrop { background: rgba(8,10,22,.7); }
       <pre id="bk-preview"></pre>
       <div class="actions">
         <a class="btn primary" id="bk-mailto" href="#">メールで送信する</a>
-        <a class="btn" id="bk-smsto" href="#">ショートメールで送信する</a>
       </div>
       <button class="btn" type="button" id="bk-copy">申込内容をコピー</button>
       <p class="note" id="bk-copied" role="status"></p>
-      <p class="note">ボタンを押すとメールまたはメッセージのアプリが開きます。そのまま送信してください。アプリが開かない場合は、内容をコピーして domanagement.net@gmail.com へメールでお送りください。<br>送信後、この日程は仮予約となります。お料理の手配が確定しだい、ご予約確定のご連絡と事前決済リンクをお送りします。ご連絡から6時間以内の事前決済をお願いします（期限を過ぎると仮予約は解除されます）。</p>
+      <p class="note">ボタンを押すとメールアプリが開きます。そのまま送信してください。アプリが開かない場合は、内容をコピーして domanagement.net@gmail.com へメールでお送りください。<br>送信後、この日程は仮予約となります。お料理の手配が確定しだい、ご予約確定のご連絡と事前決済リンクをお送りします。ご連絡から6時間以内（期限が22時〜翌9時にかかる場合は翌朝10時まで）の事前決済をお願いします。期限を過ぎると仮予約は解除されます。</p>
     </section>
   </div>
 </dialog>

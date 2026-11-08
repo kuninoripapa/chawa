@@ -1,12 +1,11 @@
 /* 茶和 貸切パーティー 予約申込画面
    - 空き状況は availability.json（予約済み・休業日・受付期間）を読み込んで反映
-   - 送信はメール（domanagement.net@gmail.com）またはショートメール（090-2469-6706）
+   - 送信はメール（domanagement.net@gmail.com）のみ
 */
 (function () {
   'use strict';
 
   var MAIL = 'domanagement.net@gmail.com';
-  var SMS = '09024696706';
   var LEAD_DAYS = 5; // 利用日の5日前まで
 
   // 祝日（受付期間の分）
@@ -198,12 +197,12 @@
       'パーティの種類：' + $('bk-kind').value,
       'お名前：' + $('bk-name').value.trim(),
       '電話番号：' + $('bk-tel').value.trim(),
-      'メール：' + ($('bk-mail').value.trim() || 'なし'),
+      'メール：' + $('bk-mail').value.trim(),
       'ご要望：' + ($('bk-note').value.trim() || 'なし'),
       '規約第1条（コースは茶和の手配・コーディネートで、会費にコーディネート料を含む）：承諾',
       '破損・汚損・未分別時の追加請求：承諾',
       '',
-      '※送信後、この日程は仮予約となります。お料理の手配が確定しだい、茶和からご予約確定のご連絡と事前決済リンクをお送りします（提携先の受付は11:00〜20:00のため、20時以降のお申込みは翌日11時以降のご連絡）。ご連絡から6時間以内に事前決済がない場合、仮予約は解除されます。'
+      '※送信後、この日程は仮予約となります。お料理の手配が確定しだい、茶和からご予約確定のご連絡と事前決済リンクをお送りします（提携先の受付は11:00〜20:00のため、20時以降のお申込みは翌日11時以降のご連絡）。ご連絡から6時間以内（期限が22時〜翌9時にかかる場合は翌朝10時まで）に事前決済がない場合、仮予約は解除されます。'
     ].join('\n');
   }
 
@@ -217,6 +216,7 @@
     if (!$('bk-name').value.trim()) bad.push('お名前');
     var tel = $('bk-tel').value.replace(/[^0-9]/g, '');
     if (tel.length < 10) bad.push('電話番号');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('bk-mail').value.trim())) bad.push('メールアドレス');
     if (!$('bk-agree1').checked || !$('bk-agree2').checked) bad.push('ご確認事項へのチェック');
     return bad;
   }
@@ -231,7 +231,6 @@
     $('bk-preview').textContent = text;
     var subject = '【茶和 貸切予約申込】' + state.date + ' ' + SLOTS[state.slot].label + ' ' + $('bk-name').value.trim() + '様';
     $('bk-mailto').href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
-    $('bk-smsto').href = 'sms:' + SMS + '?&body=' + encodeURIComponent(text);
     $('bk-send').hidden = false;
     $('bk-send').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
