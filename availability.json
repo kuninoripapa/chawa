@@ -1,16 +1,5 @@
 {
   "until": "2026-12-30",
   "closed": [],
-  "booked": [
-    {
-      "date": "2026-11-14",
-      "slot": "night",
-      "status": "hold"
-    },
-    {
-      "date": "2026-11-14",
-      "slot": "day",
-      "status": "hold"
-    }
-  ]
+  "booked": []
 }
